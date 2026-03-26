@@ -18,8 +18,7 @@ export default async function handler(req, res) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlkeW96eHB2Ym95OGhrd2tzemZ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDMwMDMxMjYsImV4cCI6MjA1ODU3OTEyNn0.k1rstu3hYyhZUyE7bJOAuZMpdnXx0gfPsIPFJqrTeMY'
-        },
+          'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,        },
         body: JSON.stringify(req.body)
       }
     );
