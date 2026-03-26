@@ -13,20 +13,30 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(
-      'https://ydyozxpvboy8hkwkszfy.supabase.co/functions/v1/pantry-match',
+      'https://ydyozxpxbqvhhkwkxzfy.supabase.co/functions/v1/pantry-match',
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,        },
+          'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+          'apikey': process.env.SUPABASE_ANON_KEY
+        },
         body: JSON.stringify(req.body)
       }
     );
 
-    const data = await response.json();
-    return res.status(response.status).json(data);
+    const raw = await response.text();
+
+    try {
+      return res.status(response.status).json(JSON.parse(raw));
+    } catch {
+      return res.status(response.status).send(raw);
+    }
 
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({
+      error: error.message,
+      note: 'Middleware could not reach Supabase function'
+    });
   }
 }
